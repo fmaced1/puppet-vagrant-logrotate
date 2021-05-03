@@ -1,12 +1,12 @@
 # LogRotate com Vagrant e Puppet
 
-Imagem ubuntu com Vagrant para validar o funcionamento do modulo LogRotate com o Puppet
+Imagem Ubuntu 18 com Vagrant para validar o funcionamento do modulo LogRotate com o Puppet
 
 ## Como instalar e executar
 
 Instalando o Vagrant
 ```bash
-VAGRANT_BIN="${VAGRANT_BIN}"
+VAGRANT_BIN="2.2.16"
 curl -LO https://releases.hashicorp.com/vagrant/${VAGRANT_BIN}/vagrant_${VAGRANT_BIN}_linux_amd64.zip
 unzip vagrant_${VAGRANT_BIN}_linux_amd64.zip
 sudo mv vagrant /usr/local/bin && rm vagrant_${VAGRANT_BIN}_linux_amd64.zip
@@ -27,18 +27,18 @@ Teste o funcionamento do seu puppet
 sudo puppet apply -e 'service { "puppet": enable => true, }'
 ```
 
+Arquivos de log com 10m para simulação.
+```bash
+ls -la /tmp/docker/container-*/
+```
+
 O vagrant monta o diretório onde está o seu Vagrantfile dentro de /vagrant/ dentro da VM
 ```bash
 cd /vagrant/
 puppet apply logrotate.pp
 ```
 
-Logs de 10m para simular o ambiente de produção.
-```bash
-ls -la /tmp/docker/container-*/
-```
-
-Os seguintes arquivos devem ter o seguinte conteúdo:
+Após o puppet apply, o arquivo docker-logs será criado com o seguinte conteúdo:
 ```bash
 > cat /etc/logrotate.d/hourly/docker-logs
 # THIS FILE IS AUTOMATICALLY DISTRIBUTED BY PUPPET.  ANY CHANGES WILL BE
